@@ -1,20 +1,17 @@
-import express, { Request, Response, NextFunction } from 'express'
+import express from 'express'
 import usersRouter from './routes/users.routes'
 import databaseService from './services/database.services'
-import { StatusCodes } from 'http-status-codes'
+import { defaultErrorHandler } from './middlewares/error.middlewares'
 
 const app = express()
 const PORT = process.env.PORT || 3000
-
-app.use(express.json())
-app.use('/users', usersRouter)
-
 databaseService.connect()
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.log('Lỗi òi', err.message)
-  res.status(StatusCodes.BAD_REQUEST).json({ message: err.message })
-})
+app.use(express.json())
+
+app.use('/users', usersRouter)
+
+app.use(defaultErrorHandler)
 
 app.listen(PORT, () => {
   console.log(`DUTHANHDUOC - Nodejs is running at http://localhost:${PORT}`)
