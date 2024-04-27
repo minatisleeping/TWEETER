@@ -1,0 +1,5 @@
+node_modules/
+dist/
+# MACOS
+.DS_Store
+.env
