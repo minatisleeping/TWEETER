@@ -1,11 +1,15 @@
 import { NextFunction, Request, Response } from 'express'
-import { LogoutReqBody, RegisterReqBody } from '~/models/requests/User.requests'
+import { LogoutReqBody, RegisterReqBody, TokenPayload, VerifyEmailReqBody } from '~/models/requests/User.requests'
 import { ParamsDictionary } from 'express-serve-static-core'
 
 import userService from '~/services/users.services'
 import { USER_MESSAGES } from '~/constants/messages'
 import { ObjectId } from 'mongodb'
 import User from '~/models/schemas/User.schema'
+import databaseService from '~/services/database.services'
+import { StatusCodes } from 'http-status-codes'
+import { UserVerifyStatus } from '~/constants/enums'
+import { ErrorWithStatus } from '~/models/Errors'
 
 export const loginController = async (req: Request, res: Response) => {
   const user = req.user as User
@@ -35,4 +39,33 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
   const result = await userService.logout(refresh_token)
 
   return res.json(result)
+}
+
+export const emailVerifyController = async (req: Request<ParamsDictionary, any, VerifyEmailReqBody>, res: Response) => {
+  const { user_id } = req.decoded_email_verify_token as TokenPayload
+  const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
+
+  if (!user) {
+    throw new ErrorWithStatus({
+      message: USER_MESSAGES.USER_NOT_FOUND,
+      status: StatusCodes.NOT_FOUND
+    })
+  }
+
+  if (user.email_verify_token === '' && user.verify === UserVerifyStatus.VERIFIED) {
+    return res.json({ message: USER_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE })
+  }
+
+  if (user.email_verify_token !== req.body.email_verify_token) {
+    throw new ErrorWithStatus({
+      message: USER_MESSAGES.EMAIL_VERIFY_TOKEN_IS_INCORRECT,
+      status: StatusCodes.UNAUTHORIZED
+    })
+  }
+
+  const result = await userService.verifyEmail(user_id)
+  return res.json({
+    message: USER_MESSAGES.EMAIL_VERIFY_SUCCESS,
+    result
+  })
 }

@@ -17,3 +17,7 @@ export interface TokenPayload extends JwtPayload {
   user_id: string
   type: TokenType // vì trong signToken để là type nên phải đặt là type
 }
+
+export interface VerifyEmailReqBody {
+  email_verify_token: string
+}
