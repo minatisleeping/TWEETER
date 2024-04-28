@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { loginController, registerController } from '~/controllers/users.controller'
+import { loginController, registerController } from '~/controllers/users.controllers'
 import { loginValidator, registerValidator } from '~/middlewares/users.middlewares'
 import { wrapReqHandler } from '~/utils/handler'
 
@@ -11,7 +11,7 @@ usersRouter.get('/', (req, res) => {
   })
 })
 
-usersRouter.post('/login', loginValidator, loginController)
+usersRouter.post('/login', loginValidator, wrapReqHandler(loginController))
 
 /**
  * Description: Register a new user
