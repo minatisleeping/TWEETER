@@ -17,7 +17,6 @@ export const loginValidator = validate(
             email,
             password: hashPassword(req.body.password)
           })
-          console.log('🚀 ~ options: ~ user:', user)
           if (!user) throw new Error(USER_MESSAGES.EMAIL_OR_PASSWORD_IS_INCORRECT)
 
           req.user = user
