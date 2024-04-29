@@ -5,7 +5,8 @@ import {
   RegisterReqBody,
   TokenPayload,
   VerifyEmailReqBody,
-  ForgotPasswordReqBody
+  ForgotPasswordReqBody,
+  VerifyForgotPasswordReqBody
 } from '~/models/requests/User.requests'
 import { ParamsDictionary } from 'express-serve-static-core'
 import userService from '~/services/users.services'
@@ -101,4 +102,12 @@ export const forgotPasswordController = async (
   const result = await userService.forgotPassword((_id as ObjectId).toString())
 
   return res.json(result)
+}
+
+export const verifyForgotPasswordController = async (
+  req: Request<ParamsDictionary, any, VerifyForgotPasswordReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  return res.json({ message: USER_MESSAGES.VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS })
 }
