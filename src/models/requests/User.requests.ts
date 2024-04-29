@@ -20,7 +20,7 @@ export interface LogoutReqBody {
 
 export interface TokenPayload extends JwtPayload {
   user_id: string
-  type: TokenType // vì trong signToken để là type nên phải đặt là type
+  type: TokenType // vì signToken để là type nên đặt là type
 }
 
 export interface VerifyEmailReqBody {
@@ -32,5 +32,11 @@ export interface ForgotPasswordReqBody {
 }
 
 export interface VerifyForgotPasswordReqBody {
+  forgot_password_token: string
+}
+
+export interface ResetPasswordReqBody {
+  password: string
+  confirm_password: string
   forgot_password_token: string
 }
