@@ -199,7 +199,7 @@ export const accessTokenValidator = validate(
       Authorization: {
         custom: {
           options: async (value: string, { req }) => {
-            const access_token = (value || '').split(' ')[1]
+            const access_token = value.split(' ')[1]
 
             if (!access_token) {
               throw new ErrorWithStatus({
@@ -443,4 +443,30 @@ export const updateMeValidator = validate(
     },
     ['body']
   )
+)
+
+export const followValidator = validate(
+  checkSchema({
+    followed_user_id: {
+      custom: {
+        options: async (value: string, { req }) => {
+          if (!ObjectId.isValid(value)) {
+            throw new ErrorWithStatus({
+              message: USER_MESSAGES.INVALID_FOLLOWED_USER_ID,
+              status: StatusCodes.BAD_REQUEST
+            })
+          }
+
+          const followed_user = await databaseService.users.findOne({ _id: new ObjectId(value) })
+
+          if (followed_user === null) {
+            throw new ErrorWithStatus({
+              message: USER_MESSAGES.USER_NOT_FOUND,
+              status: StatusCodes.NOT_FOUND
+            })
+          }
+        }
+      }
+    }
+  })
 )
