@@ -2,7 +2,6 @@ import { ParamSchema, checkSchema } from 'express-validator'
 import { NextFunction, Request } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { JsonWebTokenError } from 'jsonwebtoken'
-import { capitalize } from 'lodash'
 import { USER_MESSAGES } from '~/constants/messages'
 import { ErrorWithStatus } from '~/models/Errors'
 import databaseService from '~/services/database.services'
@@ -13,6 +12,8 @@ import { validate } from '~/utils/validation'
 import { ObjectId } from 'mongodb'
 import { TokenPayload } from '~/models/requests/User.requests'
 import { UserVerifyStatus } from '~/constants/enums'
+import { capitalize } from '~/utils/capitalize'
+import { REGEX_USERNAME } from '~/constants/regex'
 
 const passwordSchema: ParamSchema = {
   notEmpty: { errorMessage: USER_MESSAGES.PASSWORD_IS_REQUIRED },
@@ -439,9 +440,14 @@ export const updateMeValidator = validate(
         optional: true,
         isString: { errorMessage: USER_MESSAGES.USERNAME_MUST_BE_A_STRING },
         trim: true,
-        isLength: {
-          options: { min: 1, max: 50 },
-          errorMessage: USER_MESSAGES.USERNAME_LENGTH_MUST_BE_LESS_THAN_50
+        custom: {
+          options: async (username, { req }) => {
+            if (!REGEX_USERNAME.test(username)) throw new Error(USER_MESSAGES.USERNAME_IS_INVALID)
+            const user = await databaseService.users.findOne({ username })
+            if (user) throw Error(USER_MESSAGES.USERNAME_ALREADY_EXISTED)
+
+            return true
+          }
         }
       },
       avatar: {

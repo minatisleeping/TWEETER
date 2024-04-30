@@ -33,6 +33,9 @@ export const USER_MESSAGES = {
   USER_NOT_FOUND: 'User not found!',
   USER_ALREADY_VERIFIED_BEFORE: 'User already verified before!',
   USER_BANNED: 'User banned!',
+  USERNAME_IS_INVALID:
+    'Username must be 4-15 characters long and contain only letters numbers, underscores not only numbers!',
+  USERNAME_ALREADY_EXISTED: 'Username the same as the previous one!',
   //other
   LOGIN_SUCCESS: 'Login successfully!',
   REGISTER_SUCCESS: 'Register successfully!',
