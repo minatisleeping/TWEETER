@@ -476,3 +476,40 @@ export const updateMeValidator = validate(
 export const followValidator = validate(checkSchema({ followed_user_id: userIdSchema }, ['body']))
 
 export const unfollowValidator = validate(checkSchema({ user_id: userIdSchema }, ['params']))
+
+export const changePasswordValidator = validate(
+  checkSchema(
+    {
+      old_password: {
+        ...passwordSchema,
+        custom: {
+          options: async (value, { req }) => {
+            const { user_id } = req.decoded_authorization as TokenPayload
+            const user = await databaseService.users.findOne({
+              _id: new ObjectId(user_id)
+            })
+
+            if (user === null) {
+              throw new ErrorWithStatus({
+                message: USER_MESSAGES.USER_NOT_FOUND,
+                status: StatusCodes.NOT_FOUND // 404
+              })
+            }
+
+            const { password } = user
+            if (password !== hashPassword(value)) {
+              throw new ErrorWithStatus({
+                message: USER_MESSAGES.OLD_PASSWORD_NOT_MATCH,
+                status: StatusCodes.UNAUTHORIZED
+              })
+            }
+            return true
+          }
+        }
+      },
+      password: passwordSchema,
+      confirm_password: confirmPasswordSchema
+    },
+    ['body']
+  )
+)
