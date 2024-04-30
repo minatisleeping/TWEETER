@@ -8,6 +8,10 @@ import { TokenType, UserVerifyStatus } from '~/constants/enums'
 import { ObjectId } from 'mongodb'
 import RefreshToken from '../models/schemas/RefreshToken.schema'
 import { USER_MESSAGES } from '~/constants/messages'
+import { verify } from 'crypto'
+import { create } from 'lodash'
+import { ErrorWithStatus } from '~/models/Errors'
+import { StatusCodes } from 'http-status-codes'
 
 class UserService {
   private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -61,6 +65,7 @@ class UserService {
       new User({
         ...payload,
         _id: user_id,
+        username: `user_${user_id.toString()}`,
         email_verify_token,
         password: hashPassword(payload.password),
         date_of_birth: new Date(payload.date_of_birth)
@@ -198,6 +203,26 @@ class UserService {
         }
       }
     )
+    return user
+  }
+
+  async getProfile(username: string) {
+    const user = await databaseService.users.findOne(
+      { username },
+      {
+        projection: {
+          password: 0,
+          email_verify_token: 0,
+          forgot_password_token: 0,
+          verify: 0,
+          create_at: 0,
+          updated_at: 0
+        }
+      }
+    )
+    if (user === null)
+      throw new ErrorWithStatus({ message: USER_MESSAGES.USER_NOT_FOUND, status: StatusCodes.NOT_FOUND })
+
     return user
   }
 }

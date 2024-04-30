@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   forgotPasswordController,
   getMeController,
+  getProfileController,
   loginController,
   logoutController,
   registerController,
@@ -137,5 +138,12 @@ usersRouter.patch(
   ]),
   wrapReqHandler(updateMeController)
 )
+
+/**
+ * * Description: Get user profile
+ * Path: /:username
+ * Method: GET
+ */
+usersRouter.get('/:username', wrapReqHandler(getProfileController))
 
 export default usersRouter
