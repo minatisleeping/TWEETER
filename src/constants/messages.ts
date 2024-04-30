@@ -82,7 +82,7 @@ export const USER_MESSAGES = {
   GET_PROFILE_SUCCESS: 'Get profile successfully!',
   INVALID_FOLLOWED_USER_ID: 'Invalid followed user id!',
   FOLLOWED_USER_NOT_FOUND: 'Followed user not found!',
-  FOLLOWED: 'Already followed!',
+  FOLLOWED_BEFORE: 'Already followed before!',
   FOLLOW_SUCCESS: 'Follow successfully!',
   INVALID_USER_ID: 'Invalid user id!',
   NOT_FOLLOWED: 'Not followed!',
