@@ -10,7 +10,8 @@ import {
   ResetPasswordReqBody,
   UpdateMeReqBody,
   GetProfileReqParams,
-  FollowReqBody
+  FollowReqBody,
+  UnfollowReqParams
 } from '~/models/requests/User.requests'
 import { ParamsDictionary } from 'express-serve-static-core'
 import userService from '~/services/users.services'
@@ -161,6 +162,7 @@ export const getProfileController = async (req: Request<GetProfileReqParams>, re
     user
   })
 }
+
 export const followController = async (
   req: Request<ParamsDictionary, any, FollowReqBody>,
   res: Response,
@@ -169,6 +171,18 @@ export const followController = async (
   const { user_id } = req.decoded_authorization as TokenPayload
   const { followed_user_id } = req.body
   const result = await userService.follow(user_id, followed_user_id)
+
+  return res.json(result)
+}
+
+export const unfollowController = async (
+  req: Request<ParamsDictionary, any, UnfollowReqParams>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const { user_id: followed_user_id } = req.params
+  const result = await userService.unfollow(user_id, followed_user_id)
 
   return res.json(result)
 }
