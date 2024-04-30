@@ -7,7 +7,8 @@ import {
   VerifyEmailReqBody,
   ForgotPasswordReqBody,
   VerifyForgotPasswordReqBody,
-  ResetPasswordReqBody
+  ResetPasswordReqBody,
+  UpdateMeReqBody
 } from '~/models/requests/User.requests'
 import { ParamsDictionary } from 'express-serve-static-core'
 import userService from '~/services/users.services'
@@ -22,7 +23,7 @@ import { ErrorWithStatus } from '~/models/Errors'
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   const user = req.user as User
   const user_id = user._id as ObjectId
-  const result = await userService.login(user_id.toString())
+  const result = await userService.login({ user_id: user_id.toString(), verify: user.verify })
 
   res.json({
     message: USER_MESSAGES.LOGIN_SUCCESS,
@@ -99,8 +100,8 @@ export const forgotPasswordController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { _id } = req.user as User
-  const result = await userService.forgotPassword((_id as ObjectId).toString())
+  const { _id, verify } = req.user as User
+  const result = await userService.forgotPassword({ user_id: (_id as ObjectId).toString(), verify })
 
   return res.json(result)
 }
@@ -130,4 +131,19 @@ export const getMeController = async (req: Request, res: Response, next: NextFun
 
   const result = await userService.getMe(user_id)
   return res.json(result)
+}
+
+export const updateMeController = async (
+  req: Request<ParamsDictionary, any, UpdateMeReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const { body } = req
+  const result = await userService.updateMe(user_id, body)
+
+  return res.json({
+    message: USER_MESSAGES.UPDATE_ME_SUCCESS,
+    result
+  })
 }
