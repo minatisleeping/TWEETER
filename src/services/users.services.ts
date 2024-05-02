@@ -8,8 +8,6 @@ import { TokenType, UserVerifyStatus } from '~/constants/enums'
 import { ObjectId } from 'mongodb'
 import RefreshToken from '../models/schemas/RefreshToken.schema'
 import { USER_MESSAGES } from '~/constants/messages'
-import { verify } from 'crypto'
-import { create } from 'lodash'
 import { ErrorWithStatus } from '~/models/Errors'
 import { StatusCodes } from 'http-status-codes'
 import Follower from '~/models/schemas/Followers'
@@ -118,6 +116,12 @@ class UserService {
       ])
     ])
     const [access_token, refresh_token] = token
+    await databaseService.refresh_tokens.insertOne(
+      new RefreshToken({
+        user_id: new ObjectId(user_id),
+        token: refresh_token
+      })
+    )
     return { access_token, refresh_token }
   }
 
