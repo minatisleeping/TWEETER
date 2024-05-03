@@ -3,3 +3,5 @@ dist/
 # MACOS
 .DS_Store
 .env
+
+uploads/
