@@ -7,6 +7,7 @@ import {
   getProfileController,
   loginController,
   logoutController,
+  oauthController,
   registerController,
   resendEmailVerifyController,
   resetPasswordController,
@@ -43,12 +44,20 @@ usersRouter.get('/', (req, res) => {
 })
 
 /**
- * * Description: Login
+ * * Description: Login by directly register account
  * Path: /login
  * Method: POST
  * Request: { email: string, password: string }
  */
 usersRouter.post('/login', loginValidator, wrapReqHandler(loginController))
+
+/**
+ * * Description: OAuth login by Google account
+ * Path: /oauth/google
+ * Method: GET
+ * Query: { code: string }
+ */
+usersRouter.get('/oauth/google', wrapReqHandler(oauthController))
 
 /**
  * * Description: Register a new user
