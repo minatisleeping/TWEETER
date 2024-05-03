@@ -97,5 +97,8 @@ export const USER_MESSAGES = {
   REFRESH_TOKEN_SUCCESS: 'Refresh token successfully!',
   EMAIL_NOT_VERIFIED: 'Email not verified!',
   UPLOAD_IMAGE_SUCCESS: 'Upload image successfully!',
-  UPLOAD_VIDEO_SUCCESS: 'Upload video successfully'
+  UPLOAD_VIDEO_SUCCESS: 'Upload video successfully',
+
+  // GMAIL
+  GMAIL_NOT_VERIFIED: 'Gmail not verified!'
 } as const
