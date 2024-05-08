@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { NextFunction, Request, Response } from 'express'
 import {
   LoginReqBody,
@@ -23,7 +24,6 @@ import databaseService from '~/services/database.services'
 import { StatusCodes } from 'http-status-codes'
 import { UserVerifyStatus } from '~/constants/enums'
 import { ErrorWithStatus } from '~/models/Errors'
-import 'dotenv/config'
 
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   const user = req.user as User
