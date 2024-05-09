@@ -2,18 +2,22 @@ import { Request } from 'express'
 import fs from 'fs'
 import path from 'path'
 import formidable, { File } from 'formidable'
-import { UPLOAD_TEMP_DIR } from '~/constants/dir'
+import { UPLOAD_IMAGE_TEMP_DIR, UPLOAD_VIDEO_TEMP_DIR } from '~/constants/dir'
 
 export const initFolder = () => {
-  if (!fs.existsSync(UPLOAD_TEMP_DIR)) {
-    fs.mkdirSync(UPLOAD_TEMP_DIR, { recursive: true })
-  }
+  ;[UPLOAD_IMAGE_TEMP_DIR, UPLOAD_VIDEO_TEMP_DIR].forEach((dir) => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, {
+        recursive: true // mục đích là để tạo folder nested
+      })
+    }
+  })
 }
 
 export const handleUploadImage = async (req: Request) => {
   // const formidable = (await import('formidable')).default
   const form = formidable({
-    uploadDir: UPLOAD_TEMP_DIR,
+    uploadDir: UPLOAD_IMAGE_TEMP_DIR,
     maxFiles: 4,
     keepExtensions: true,
     maxFileSize: 300 * 1024,
@@ -36,6 +40,34 @@ export const handleUploadImage = async (req: Request) => {
       if (!files.image) return reject(new Error('File is empty'))
 
       resolve(files.image as File[])
+    })
+  })
+}
+
+export const handleUploadVideo = async (req: Request) => {
+  // const formidable = (await import('formidable')).default
+  const form = formidable({
+    uploadDir: UPLOAD_IMAGE_TEMP_DIR,
+    maxFiles: 1,
+    keepExtensions: true,
+    maxFileSize: 50 * 1024 * 1024, // 50MB
+    filter: function ({ name, originalFilename, mimetype }) {
+      return true
+      // const valid = name === 'image' && Boolean(mimetype?.includes('image/'))
+      // if (!valid) {
+      //   form.emit('error' as any, new Error('Invalid file type') as any)
+      // }
+      // return valid
+    }
+  })
+
+  return new Promise<File[]>((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) return reject(err)
+
+      if (!files.video) return reject(new Error('File is empty'))
+
+      resolve(files.video as File[])
     })
   })
 }
