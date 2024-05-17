@@ -101,5 +101,8 @@ export const USER_MESSAGES = {
   UPLOAD_SUCCESS: 'Upload successfully',
 
   // GMAIL
-  GMAIL_NOT_VERIFIED: 'Gmail not verified!'
+  GMAIL_NOT_VERIFIED: 'Gmail not verified!',
+
+  GET_VIDEO_STATUS_SUCCESS: 'Get video status successfully!',
+  GET_VIDEO_STATUS_FAIL: 'Get video status fail!'
 } as const
