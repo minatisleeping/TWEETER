@@ -3,7 +3,6 @@ import { validationResult, ContextRunner, ValidationChain } from 'express-valida
 import { RunnableValidationChains } from 'express-validator/src/middlewares/schema'
 import { StatusCodes } from 'http-status-codes'
 import { EntityError, ErrorWithStatus } from '~/models/Errors'
-// import { EntityError, ErrorWithStatus } from '~/models/Errors'
 
 export const validate = (validation: RunnableValidationChains<ValidationChain>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
