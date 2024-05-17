@@ -32,6 +32,24 @@ class DatabaseService {
     this.users.createIndex({ username: 1 }, { unique: true })
   }
 
+  indexRefreshTokens() {
+    this.refresh_tokens.createIndex({ token: 1 })
+    this.refresh_tokens.createIndex(
+      { exp: 1 },
+      {
+        expireAfterSeconds: 0
+      }
+    )
+  }
+
+  indexVideoStatus() {
+    this.videoStatus.createIndex({ name: 1 })
+  }
+
+  indexFollowers() {
+    this.followers.createIndex({ user_id: 1, followed_user_id: 1 })
+  }
+
   get users(): Collection<User> {
     return this.db.collection(process.env.DB_COLLECTION_USERS as string)
   }

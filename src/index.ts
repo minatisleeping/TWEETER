@@ -14,6 +14,9 @@ app.use(cors())
 const PORT = process.env.PORT
 databaseService.connect().then(() => {
   databaseService.indexUsers()
+  databaseService.indexRefreshTokens()
+  databaseService.indexVideoStatus()
+  databaseService.indexFollowers()
 })
 app.use(express.json())
 
