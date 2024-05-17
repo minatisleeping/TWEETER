@@ -12,7 +12,9 @@ import cors from 'cors'
 const app = express()
 app.use(cors())
 const PORT = process.env.PORT
-databaseService.connect()
+databaseService.connect().then(() => {
+  databaseService.indexUsers()
+})
 app.use(express.json())
 
 // Tạo folder
