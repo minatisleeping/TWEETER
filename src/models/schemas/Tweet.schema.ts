@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { TweetAudience, TweetType } from '~/constants/enums'
-import { Media } from '../Others'
+import { Media } from '~/models/Others'
 
 interface TweetConstructor {
   _id?: ObjectId
@@ -8,7 +8,7 @@ interface TweetConstructor {
   type: TweetType
   audience: TweetAudience
   content: string
-  parent_id: null | string //  chỉ null khi tweet gốc
+  parent_id: null | string
   hashtags: ObjectId[]
   mentions: string[]
   medias: Media[]
@@ -24,7 +24,7 @@ export default class Tweet {
   type: TweetType
   audience: TweetAudience
   content: string
-  parent_id: null | ObjectId //  chỉ null khi tweet gốc
+  parent_id: null | ObjectId
   hashtags: ObjectId[]
   mentions: ObjectId[]
   medias: Media[]
@@ -32,7 +32,6 @@ export default class Tweet {
   user_views: number
   created_at: Date
   updated_at: Date
-
   constructor({
     _id,
     audience,

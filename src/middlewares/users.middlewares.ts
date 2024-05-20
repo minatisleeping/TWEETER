@@ -1,5 +1,5 @@
 import { ParamSchema, checkSchema } from 'express-validator'
-import { NextFunction, Request } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { USER_MESSAGES } from '~/constants/messages'
