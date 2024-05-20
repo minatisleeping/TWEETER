@@ -148,7 +148,7 @@ usersRouter.get('/me', accessTokenValidator, wrapReqHandler(getMeController))
 usersRouter.patch(
   '/me',
   accessTokenValidator,
-  verifiedUserValidator as any,
+  verifiedUserValidator,
   updateMeValidator,
   filterMiddleware<UpdateMeReqBody>([
     'name',
@@ -180,7 +180,7 @@ usersRouter.get('/:username', wrapReqHandler(getProfileController))
 usersRouter.post(
   '/follow',
   accessTokenValidator,
-  verifiedUserValidator as any,
+  verifiedUserValidator,
   followValidator,
   wrapReqHandler(followController)
 )
@@ -194,7 +194,7 @@ usersRouter.post(
 usersRouter.delete(
   '/unfollow/:user_id',
   accessTokenValidator,
-  verifiedUserValidator as any,
+  verifiedUserValidator,
   unfollowValidator,
   wrapReqHandler(unfollowController)
 )
@@ -209,7 +209,7 @@ usersRouter.delete(
 usersRouter.put(
   '/change-password',
   accessTokenValidator,
-  verifiedUserValidator as any,
+  verifiedUserValidator,
   changePasswordValidator,
   wrapReqHandler(changePasswordController)
 )

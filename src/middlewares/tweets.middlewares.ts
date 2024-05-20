@@ -28,18 +28,17 @@ export const createTweetValidator = validate(
       custom: {
         options: (value, { req }) => {
           const type = req.body.type as TweetType
-          //* Nếu type là retweet, comment, quote_tweet thì parent_id phải là 'tweet_id' của tweet cha
+          // Nếu `type` là RE_TWEET, COMMENT, QUOTE_TWEET thì `parent_id` phải là `tweet_id` của tweet cha
           if (
             [TweetType.RE_TWEET, TweetType.COMMENT, TweetType.QUOTE_TWEET].includes(type) &&
             !ObjectId.isValid(value)
           ) {
             throw new Error(TWEET_MESSAGES.PARENT_ID_MUST_BE_A_VALID_TWEET_ID)
           }
-
+          // nếu `type` là tweet thì `parent_id` phải là `null`
           if (type === TweetType.TWEET && value !== null) {
             throw new Error(TWEET_MESSAGES.PARENT_ID_MUST_BE_NULL)
           }
-
           return true
         }
       }
@@ -51,21 +50,19 @@ export const createTweetValidator = validate(
           const type = req.body.type as TweetType
           const hashtags = req.body.hashtags as string[]
           const mentions = req.body.mentions as string[]
-          //*  Nếu type là comment, quote_tweet, tweet và k có mentions và hashtags thì content phải là
-          //* string và not null
+          // Nếu `type` là COMMENT, QUOTE_TWEET, tweet và không có `mentions` và `hashtags` thì `content` phải là string và không được rỗng
           if (
-            [TweetType.TWEET, TweetType.COMMENT, TweetType.QUOTE_TWEET].includes(type) &&
+            [TweetType.COMMENT, TweetType.QUOTE_TWEET, TweetType.TWEET].includes(type) &&
             isEmpty(hashtags) &&
             isEmpty(mentions) &&
             value === ''
           ) {
             throw new Error(TWEET_MESSAGES.CONTENT_MUST_BE_A_NON_EMPTY_STRING)
           }
-
+          // Nếu `type` là RE_TWEET thì `content` phải là `''`.
           if (type === TweetType.RE_TWEET && value !== '') {
             throw new Error(TWEET_MESSAGES.CONTENT_MUST_BE_A_EMPTY_STRING)
           }
-
           return true
         }
       }
@@ -73,12 +70,11 @@ export const createTweetValidator = validate(
     hashtags: {
       isArray: true,
       custom: {
-        options: (value) => {
-          // Yếu cầu mỗi phần tử trong array là string
+        options: (value, { req }) => {
+          // Yêu cầu mỗi phần từ trong array là string
           if (value.some((item: any) => typeof item !== 'string')) {
             throw new Error(TWEET_MESSAGES.HASHTAG_MUST_BE_AN_ARRAY_OF_STRING)
           }
-
           return true
         }
       }
@@ -86,12 +82,11 @@ export const createTweetValidator = validate(
     mentions: {
       isArray: true,
       custom: {
-        options: (value) => {
-          // Yếu cầu mỗi phần tử trong array là user_id
+        options: (value, { req }) => {
+          // Yêu cầu mỗi phần từ trong array là user_id
           if (value.some((item: any) => !ObjectId.isValid(item))) {
             throw new Error(TWEET_MESSAGES.MENTIONS_MUST_BE_AN_ARRAY_OF_USER_ID)
           }
-
           return true
         }
       }
@@ -99,8 +94,8 @@ export const createTweetValidator = validate(
     medias: {
       isArray: true,
       custom: {
-        options: (value) => {
-          // Yếu cầu mỗi phần tử trong array là Media Object
+        options: (value, { req }) => {
+          // Yêu cầu mỗi phần từ trong array là Media Object
           if (
             value.some((item: any) => {
               return typeof item.url !== 'string' || !mediaType.includes(item.type)
@@ -108,7 +103,6 @@ export const createTweetValidator = validate(
           ) {
             throw new Error(TWEET_MESSAGES.MEDIA_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT)
           }
-
           return true
         }
       }
