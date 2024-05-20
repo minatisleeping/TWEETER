@@ -25,12 +25,13 @@ export enum EncodingStatus {
 }
 
 export enum TweetAudience {
-  Everyone, // 0
-  TwitterCircle // 1
+  EVERYONE, // 0
+  TWITTER_CIRCLE // 1
 }
+
 export enum TweetType {
-  Tweet,
-  Retweet,
-  Comment,
-  QuoteTweet
+  TWEET,
+  RE_TWEET,
+  COMMENT,
+  QUOTE_TWEET
 }

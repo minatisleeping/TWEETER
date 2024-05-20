@@ -4,6 +4,7 @@ import User from '~/models/schemas/User.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import Follower from '~/models/schemas/Followers'
 import VideoStatus from '~/models/schemas/VideoStatus.schema'
+import Tweet from '~/models/schemas/Tweet.schema'
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ic4ersm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
@@ -60,6 +61,10 @@ class DatabaseService {
     if (!exists) {
       this.followers.createIndex({ user_id: 1, followed_user_id: 1 })
     }
+  }
+
+  get tweets(): Collection<Tweet> {
+    return this.db.collection(process.env.DB_COLLECTION_TWEETS as string)
   }
 
   get users(): Collection<User> {

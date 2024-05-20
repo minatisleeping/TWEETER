@@ -8,6 +8,7 @@ import { initFolder } from './utils/file'
 import { UPLOAD_VIDEO_DIR } from './constants/dir'
 import staticRouter from './routes/static.routes'
 import cors from 'cors'
+import tweetRouter from './routes/tweets.routes'
 
 const app = express()
 app.use(cors())
@@ -26,6 +27,7 @@ initFolder()
 app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
 app.use('/static', staticRouter)
+app.use('/tweets', tweetRouter)
 
 app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
 
