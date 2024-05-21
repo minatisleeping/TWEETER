@@ -10,6 +10,7 @@ import staticRouter from './routes/static.routes'
 import cors from 'cors'
 import tweetRouter from './routes/tweets.routes'
 import bookmarksRouter from './routes/bookmarks.routes'
+import likesRouter from './routes/likes.routes'
 
 const app = express()
 app.use(cors())
@@ -28,6 +29,7 @@ app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
 app.use('/tweets', tweetRouter)
 app.use('/bookmarks', bookmarksRouter)
+app.use('/likes', likesRouter)
 app.use('/static', staticRouter)
 app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
 
