@@ -28,12 +28,10 @@ export const likeTweetController = async (req: Request<ParamsDictionary, any, Li
   })
 }
 
-// export const unlikeTweetController = async (req: Request<ParamsDictionary, any, TweetRequestBody>, res: Response) => {
-//   const { user_id } = req.decoded_authorization as TokenPayload
-//   const result = await tweetsService.createTweet(user_id, req.body)
+export const unlikeTweetController = async (req: Request, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const { tweet_id } = req.params
+  await likeService.unlikeTweet(user_id, tweet_id)
 
-//   return res.json({
-//     message: TWEET_MESSAGES.CREATE_TWEET_SUCCESS,
-//     result
-//   })
-// }
+  return res.json({ message: TWEET_MESSAGES.UN_LIKE_TWEET_SUCCESS })
+}

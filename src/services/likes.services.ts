@@ -24,13 +24,12 @@ class LikeService {
     return result.value as WithId<Like>
   }
 
-  // async unlikeTweet(user_id: string, tweet_id: string) {
-  //   const result = await databaseService.likes.findOneAndDelete({
-  //     user_id: new ObjectId(user_id),
-  //     tweet_id: new ObjectId(tweet_id)
-  //   })
-  //   return result
-  // }
+  async unlikeTweet(user_id: string, tweet_id: string) {
+    return await databaseService.likes.findOneAndDelete({
+      user_id: new ObjectId(user_id),
+      tweet_id: new ObjectId(tweet_id)
+    })
+  }
 }
 
 const likeService = new LikeService()
