@@ -121,7 +121,9 @@ export const TWEET_MESSAGES = {
   CREATE_TWEET_SUCCESS: 'Create tweet successfully!',
   LIKE_TWEET_SUCCESS: 'Like tweet successfully!',
   UN_LIKE_TWEET_SUCCESS: 'UnLike tweet successfully!',
-  TWEET_NOT_FOUND: 'Tweet not found!'
+  TWEET_NOT_FOUND: 'Tweet not found!',
+  GET_TWEET_SUCCESS: 'Get tweet successfully!',
+  TWEET_IS_NOT_PUBLIC: 'Tweet is not public!'
 } as const
 
 export const BOOKMARK_MESSAGES = {
