@@ -19,3 +19,11 @@ export const bookmarkTweetController = async (
     result
   })
 }
+
+export const unBookmarkTweetController = async (req: Request, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const tweet_id = req.params.tweet_id
+  await bookmarkService.unBookmarkTweet(user_id, tweet_id)
+
+  return res.json({ message: BOOKMARK_MESSAGES.UN_BOOKMARK_SUCCESSFULLY })
+}

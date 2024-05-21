@@ -121,5 +121,6 @@ export const TWEET_MESSAGES = {
 } as const
 
 export const BOOKMARK_MESSAGES = {
-  BOOKMARK_CREATED_SUCCESSFULLY: 'Bookmark created successfully!'
+  BOOKMARK_CREATED_SUCCESSFULLY: 'Bookmark created successfully!',
+  UN_BOOKMARK_SUCCESSFULLY: 'UnBookmark successfully!'
 } as const
