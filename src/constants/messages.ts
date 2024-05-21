@@ -118,7 +118,8 @@ export const TWEET_MESSAGES = {
   MENTIONS_MUST_BE_AN_ARRAY_OF_USER_ID: 'Mentions must be an array of user id!',
   MEDIA_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT: 'Media must be an array of media object!',
   CREATE_TWEET_SUCCESS: 'Create tweet successfully!',
-  LIKE_TWEET_SUCCESS: 'Like tweet successfully!'
+  LIKE_TWEET_SUCCESS: 'Like tweet successfully!',
+  UN_LIKE_TWEET_SUCCESS: 'UnLike tweet successfully!'
 } as const
 
 export const BOOKMARK_MESSAGES = {
