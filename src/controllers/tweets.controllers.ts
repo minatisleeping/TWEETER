@@ -41,5 +41,5 @@ export const getTweetController = async (req: Request, res: Response) => {
   // const { tweet_id } = req.params
   // await likeService.getTweet(user_id, tweet_id)
 
-  return res.json({ message: TWEET_MESSAGES.GET_TWEET_SUCCESS })
+  return res.json({ message: TWEET_MESSAGES.GET_TWEET_SUCCESS, result: req.tweet })
 }
