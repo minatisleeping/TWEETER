@@ -43,7 +43,8 @@ export const getTweetController = async (req: Request, res: Response) => {
   const tweet = {
     ...req.tweet,
     guest_views: result.guest_views,
-    user_views: result.user_views
+    user_views: result.user_views,
+    updated_at: result.updated_at
   }
 
   return res.json({ message: TWEET_MESSAGES.GET_TWEET_SUCCESS, result: tweet })
