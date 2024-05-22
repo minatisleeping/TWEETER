@@ -269,8 +269,9 @@ export const audienceValidator = wrapReqHandler(async (req: Request, res: Respon
         message: USER_MESSAGES.ACCESS_TOKEN_IS_REQUIRED
       })
     }
-    const author = await databaseService.users.findOne({ _id: new ObjectId(tweet.user_id) })
-
+    const author = await databaseService.users.findOne({
+      _id: new ObjectId(tweet.user_id)
+    })
     // Kiểm tra tài khoản tác giả có ổn (bị khóa hay bị xóa chưa) không
     if (!author || author.verify === UserVerifyStatus.BANNED) {
       throw new ErrorWithStatus({
@@ -280,7 +281,9 @@ export const audienceValidator = wrapReqHandler(async (req: Request, res: Respon
     }
     // Kiểm tra người xem tweet này có trong Twitter Circle của tác giả hay không
     const { user_id } = req.decoded_authorization
+    console.log('🚀 ~ user_id:', user_id)
     const isInTwitterCircle = author.twitter_circle.some((user_circle_id) => user_circle_id.equals(user_id))
+    console.log('🚀 ~ isInTwitterCircle:', isInTwitterCircle)
     // Nếu bạn không phải là tác giả và không nằm trong twitter circle thì quăng lỗi
     if (!author._id.equals(user_id) && !isInTwitterCircle) {
       throw new ErrorWithStatus({
