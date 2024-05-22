@@ -10,7 +10,7 @@ import RefreshToken from '../models/schemas/RefreshToken.schema'
 import { USER_MESSAGES } from '~/constants/messages'
 import { ErrorWithStatus } from '~/models/Errors'
 import { StatusCodes } from 'http-status-codes'
-import Follower from '~/models/schemas/Followers'
+import Follower from '~/models/schemas/Followers.schema'
 import axios from 'axios'
 
 class UserService {
