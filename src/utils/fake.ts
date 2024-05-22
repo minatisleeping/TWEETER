@@ -10,7 +10,6 @@ import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 
-
 // Mật khẩu cho các fake user
 const PASSWORD = 'Minat123!'
 // ID của tài khoản của mình, dùng để follow người khác
