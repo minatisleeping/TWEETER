@@ -37,9 +37,13 @@ export const unlikeTweetController = async (req: Request, res: Response) => {
 }
 
 export const getTweetController = async (req: Request, res: Response) => {
-  // const { user_id } = req.decoded_authorization as TokenPayload
-  // const { tweet_id } = req.params
-  // await likeService.getTweet(user_id, tweet_id)
+  const result = await tweetsService.increaseView(req.params.tweet_id, req.decoded_authorization?.user_id)
+  console.log('🚀 ~ result:', result)
+  const tweet = {
+    ...req.tweet,
+    guest_views: result.guest_views,
+    user_views: result.user_views
+  }
 
-  return res.json({ message: TWEET_MESSAGES.GET_TWEET_SUCCESS, result: req.tweet })
+  return res.json({ message: TWEET_MESSAGES.GET_TWEET_SUCCESS, result: tweet })
 }
