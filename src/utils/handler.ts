@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
 
-export const wrapReqHandler = <P>(fn: RequestHandler<P>) => {
+export const wrapReqHandler = <P>(func: RequestHandler<P, any, any, any>) => {
   return async (req: Request<P>, res: Response, next: NextFunction) => {
     try {
-      await fn(req, res, next)
+      await func(req, res, next)
     } catch (error) {
       next(error)
     }
