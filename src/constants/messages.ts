@@ -123,6 +123,7 @@ export const TWEET_MESSAGES = {
   UN_LIKE_TWEET_SUCCESS: 'UnLike tweet successfully!',
   TWEET_NOT_FOUND: 'Tweet not found!',
   GET_TWEET_SUCCESS: 'Get tweet successfully!',
+  GET_TWEET_CHILDREN_SUCCESS: 'Get tweet children successfully!',
   TWEET_IS_NOT_PUBLIC: 'Tweet is not public!'
 } as const
 
