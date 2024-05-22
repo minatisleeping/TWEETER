@@ -55,13 +55,14 @@ class TweetsService {
       },
       {
         returnDocument: 'after',
-        projection: { user_views: 1, guest_views: 1 }
+        projection: { user_views: 1, guest_views: 1, updated_at: 1 }
       }
     )
 
     return result.value as WithId<{
       user_views: number
       guest_views: number
+      updated_at: Date
     }>
   }
 
