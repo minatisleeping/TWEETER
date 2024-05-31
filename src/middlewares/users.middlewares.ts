@@ -363,9 +363,11 @@ export const resetPasswordValidator = validate(
   )
 )
 
-export const verifiedUserValidator = (req: Request, res: Response, next: NextFunction) => {
-  const { verify } = req.decoded_authorization as TokenPayload
-  if (verify !== UserVerifyStatus.VERIFIED) {
+export const verifiedUserValidator = async (req: Request, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
+
+  if (user?.verify !== UserVerifyStatus.VERIFIED) {
     return next(
       new ErrorWithStatus({
         message: USER_MESSAGES.USER_NOT_VERIFIED,

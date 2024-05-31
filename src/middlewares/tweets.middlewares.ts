@@ -303,30 +303,6 @@ export const getTweetChildrenValidator = validate(
           options: [tweetTypes],
           errorMessage: TWEET_MESSAGES.INVALID_TYPE
         }
-      },
-      limit: {
-        isNumeric: true,
-        custom: {
-          options: async (value) => {
-            const num = Number(value)
-            if (num > 100 && num < 1) {
-              throw new Error('Limit in range [1 - 100]')
-            }
-            return true
-          }
-        }
-      },
-      page: {
-        isNumeric: true,
-        custom: {
-          options: async (value) => {
-            const num = Number(value)
-            if (num < 1) {
-              throw new Error('Page must be >= 1')
-            }
-            return true
-          }
-        }
       }
     },
     ['query']
