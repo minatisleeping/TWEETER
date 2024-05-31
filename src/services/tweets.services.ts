@@ -145,20 +145,14 @@ class TweetsService {
         },
         {
           $addFields: {
-            bookmarks: {
-              $size: '$bookmarks'
-            },
-            likes: {
-              $size: '$likes'
-            },
+            bookmarks: { $size: '$bookmarks' },
+            likes: { $size: '$likes' },
             retweet_count: {
               $size: {
                 $filter: {
                   input: '$tweet_children',
                   as: 'item',
-                  cond: {
-                    $eq: ['$$item.type', TweetType.RE_TWEET]
-                  }
+                  cond: { $eq: ['$$item.type', TweetType.RE_TWEET] }
                 }
               }
             },
@@ -167,9 +161,7 @@ class TweetsService {
                 $filter: {
                   input: '$tweet_children',
                   as: 'item',
-                  cond: {
-                    $eq: ['$$item.type', TweetType.COMMENT]
-                  }
+                  cond: { $eq: ['$$item.type', TweetType.COMMENT] }
                 }
               }
             },
@@ -178,25 +170,15 @@ class TweetsService {
                 $filter: {
                   input: '$tweet_children',
                   as: 'item',
-                  cond: {
-                    $eq: ['$$item.type', TweetType.QUOTE_TWEET]
-                  }
+                  cond: { $eq: ['$$item.type', TweetType.QUOTE_TWEET] }
                 }
               }
             }
           }
         },
-        {
-          $project: {
-            tweet_children: 0
-          }
-        },
-        {
-          $skip: limit * (page - 1)
-        },
-        {
-          $limit: limit
-        }
+        { $project: { tweet_children: 0 } },
+        { $skip: limit * (page - 1) },
+        { $limit: limit }
       ])
       .toArray()
     const ids = tweets.map((tweet) => tweet._id as ObjectId)
@@ -204,16 +186,10 @@ class TweetsService {
     const date = new Date()
     const [, total] = await Promise.all([
       databaseService.tweets.updateMany(
-        {
-          _id: {
-            $in: ids
-          }
-        },
+        { _id: { $in: ids } },
         {
           $inc: inc,
-          $set: {
-            updated_at: date
-          }
+          $set: { updated_at: date }
         }
       ),
       databaseService.tweets.countDocuments({
@@ -230,10 +206,18 @@ class TweetsService {
         tweet.guest_views += 1
       }
     })
-    return {
-      tweets,
-      total
-    }
+
+    return { tweets, total }
+  }
+
+  async getNewFeeds({ user_id, limit, page }: { user_id: string; limit: number; page: number }) {
+    const followed_user_ids = await databaseService.followers
+      .find({ user_id: new ObjectId(user_id) }, { projection: { followed_user_id: 1, _id: 0 } })
+      .toArray()
+
+    const ids = followed_user_ids.map((item) => item.followed_user_id)
+    ids.push(new ObjectId(user_id))
+    return followed_user_ids
   }
 }
 
